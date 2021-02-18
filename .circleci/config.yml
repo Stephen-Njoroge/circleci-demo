@@ -14,9 +14,12 @@ workflows:
   build-deploy:
     jobs:
       - build
-      - deploy:
+      - test:
           requires:
             - build
+      - deploy:
+          requires:
+            - test
           filters:
             branches:
               only: master
@@ -26,6 +29,12 @@ workflows:
 ##################
 jobs:
   build:
+    docker:
+      - image: circleci/python:3.6.2-stretch-browsers
+    steps:
+      - checkout
+      # would contain more steps in a bigger setup
+  test:
     docker:
       - image: circleci/python:3.6.2-stretch-browsers
         environment:
