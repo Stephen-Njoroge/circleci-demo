@@ -14,9 +14,12 @@ workflows:
   build-deploy:
     jobs:
       - build
-      - deploy:
+      - test:
           requires:
             - build
+      - deploy:
+          requires:
+            - test
           filters:
             branches:
               only: master
@@ -36,6 +39,7 @@ jobs:
           POSTGRES_USER: ubuntu
           POSTGRES_DB: circle_test
           POSTGRES_PASSWORD: ''
+  test:
     steps:
       - checkout
       - run: mkdir test-reports
